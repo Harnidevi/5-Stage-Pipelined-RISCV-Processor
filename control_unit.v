@@ -11,13 +11,13 @@ module control_unit (
     output reg [2:0] alu_control
 );
     always @(*) begin
-        // ஆரம்பத்துல எல்லா சிக்னலையும் 0 ஆக்குறோம்
+    
         reg_write = 0; alu_src = 0; mem_read = 0;
         mem_write = 0; mem_to_reg = 0; branch = 0;
         alu_control = 3'b000;
 
         case (opcode)
-            // R-Type (ADD, SUB, AND, OR)
+            
             7'b0110011: begin
                 reg_write = 1;
                 case (funct3)
@@ -28,14 +28,14 @@ module control_unit (
                 endcase
             end
 
-            // I-Type (ADDI)
+            
             7'b0010011: begin
                 reg_write = 1;
                 alu_src = 1;
                 alu_control = 3'b000; // ADD
             end
 
-            // Load Word (LW)
+        
             7'b0000011: begin
                 reg_write = 1;
                 alu_src = 1;
@@ -44,7 +44,7 @@ module control_unit (
                 alu_control = 3'b000; // ADD address
             end
 
-            // Store Word (SW)
+            
             7'b0100011: begin
                 alu_src = 1;
                 mem_write = 1;
