@@ -7,7 +7,7 @@ module riscv_pipelined (
     output [1:0] forward_b_out,
     output stall_out
 );
-    // --- STAGE 1: IF (Instruction Fetch) ---
+  
     reg [31:0] pc_if;
     wire [31:0] instr_if, pc_next_if;
     wire stall;
@@ -19,14 +19,14 @@ module riscv_pipelined (
     end
     imem IMEM_STAGE (.addr(pc_if), .instr(instr_if));
 
-    // IF/ID Pipeline Register
+    
     reg [31:0] pc_id, instr_id;
     always @(posedge clk or posedge reset) begin
         if (reset) begin pc_id <= 0; instr_id <= 0; end
         else if (!stall) begin pc_id <= pc_if; instr_id <= instr_if; end
     end
 
-    // --- STAGE 2: ID (Instruction Decode) ---
+    
     wire reg_write_id, alu_src_id, mem_read_id, mem_write_id, mem_to_reg_id, branch_id;
     wire [2:0] alu_control_id;
     wire [31:0] read_data1_id, read_data2_id, imm_id;
@@ -50,7 +50,7 @@ module riscv_pipelined (
 
     imm_gen IMM_STAGE (.instr(instr_id), .imm_out(imm_id));
 
-    // ID/EX Pipeline Register
+ 
     reg reg_write_ex, alu_src_ex, mem_read_ex, mem_write_ex, mem_to_reg_ex;
     reg [2:0] alu_control_ex;
     reg [31:0] read_data1_ex, read_data2_ex, imm_ex;
@@ -78,7 +78,7 @@ module riscv_pipelined (
         end
     end
 
-    // --- STAGE 3: EX (Execute + Forwarding) ---
+   
     wire [1:0] forward_a, forward_b;
     reg reg_write_mem, mem_read_mem, mem_write_mem, mem_to_reg_mem;
     reg [31:0] alu_result_mem, write_data_mem;
@@ -115,7 +115,7 @@ module riscv_pipelined (
         .alu_control(alu_control_ex), .result(alu_result_ex)
     );
 
-    // EX/MEM Pipeline Register
+    
     always @(posedge clk or posedge reset) begin
         if (reset) begin
             reg_write_mem <= 0; mem_read_mem <= 0; mem_write_mem <= 0;
@@ -128,7 +128,6 @@ module riscv_pipelined (
         end
     end
 
-    // --- STAGE 4: MEM (Memory Access) ---
     wire [31:0] mem_read_data_mem;
     dmem DMEM_STAGE (
         .clk(clk), .mem_write(mem_write_mem), .mem_read(mem_read_mem),
@@ -150,13 +149,14 @@ module riscv_pipelined (
         end
     end
 
-    // --- STAGE 5: WB (Writeback) ---
+    
     assign write_back_data_wb = (mem_to_reg_wb) ? mem_read_data_wb : alu_result_wb;
 
-    // Debug Outputs
+   
     assign pc_out = pc_if;
     assign alu_result_ex_out = alu_result_ex;
     assign forward_a_out = forward_a;
     assign forward_b_out = forward_b;
     assign stall_out = stall;
+    
 endmodule
