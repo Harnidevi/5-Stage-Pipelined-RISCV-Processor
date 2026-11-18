@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module riscv_single_tb;
     reg clk, reset;
     wire [31:0] pc_out, alu_result_out;
@@ -15,8 +13,8 @@ module riscv_single_tb;
         $dumpfile("single_cpu_wave.vcd");
         $dumpvars(0, riscv_single_tb);
 
-        clk = 0; reset = 1; #10; // CPU ரீசெட்
-        reset = 0; #40;          // 4 கிளாக் சைக்கிள் ஓட விடுறோம்
+        clk = 0; reset = 1; #10; 
+        reset = 0; #40;         
 
         $finish;
     end
