@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module riscv_pipelined_tb;
     reg clk, reset;
     wire [31:0] pc_out, alu_result_ex_out;
@@ -20,7 +18,7 @@ module riscv_pipelined_tb;
         $dumpvars(0, riscv_pipelined_tb);
 
         clk = 0; reset = 1; #10;
-        reset = 0; #80; // பைப்லைன் முழுசா ஓடி முடிய 80ns விடுறோம்
+        reset = 0; #80; 
 
         $finish;
     end
