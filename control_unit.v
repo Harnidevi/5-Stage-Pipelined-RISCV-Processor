@@ -21,9 +21,9 @@ module control_unit (
             7'b0110011: begin
                 reg_write = 1;
                 case (funct3)
-                    3'b000: alu_control = (funct7_5) ? 3'b001 : 3'b000; // SUB or ADD
-                    3'b111: alu_control = 3'b010; // AND
-                    3'b110: alu_control = 3'b011; // OR
+                    3'b000: alu_control = (funct7_5) ? 3'b001 : 3'b000; 
+                    3'b111: alu_control = 3'b010; 
+                    3'b110: alu_control = 3'b011; 
                     default: alu_control = 3'b000;
                 endcase
             end
@@ -32,7 +32,7 @@ module control_unit (
             7'b0010011: begin
                 reg_write = 1;
                 alu_src = 1;
-                alu_control = 3'b000; // ADD
+                alu_control = 3'b000; 
             end
 
         
@@ -41,20 +41,20 @@ module control_unit (
                 alu_src = 1;
                 mem_read = 1;
                 mem_to_reg = 1;
-                alu_control = 3'b000; // ADD address
+                alu_control = 3'b000; 
             end
 
             
             7'b0100011: begin
                 alu_src = 1;
                 mem_write = 1;
-                alu_control = 3'b000; // ADD address
+                alu_control = 3'b000;
             end
 
-            // Branch (BEQ)
+            
             7'b1100011: begin
                 branch = 1;
-                alu_control = 3'b001; // SUB to compare
+                alu_control = 3'b001; 
             end
         endcase
     end
